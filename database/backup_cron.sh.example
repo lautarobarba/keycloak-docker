@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+#Ruta de destino backup
+#DEST=usuaro@host:/path
+DEST=usuaro@host:/path
+
+#Variables de entorno (LAS MISMAS INGRESADAS EN .env)
+CONTAINER_NAME=postgres_docker
+POSTGRES_USER=postgres
+POSTGRES_DB=postgres
+
+
+SCRIPT_PATH=$(realpath $0)
+WORKDIR=$(dirname ${SCRIPT_PATH})
+DIR=$(pwd)
+LOG_DIR=${WORKDIR}/backup.log
+FECHA=`date +%Y%m%d`
+
+echo [`date`] ========== Comenzando script Backup - POSTGRESQL ========== >> $LOG_DIR
+cd ${WORKDIR}
+
+echo [`date`] ::Volcando DB a ${WORKDIR}/backups/${POSTGRES_DB}${FECHA}.sql >> $LOG_DIR
+docker container exec -it ${CONTAINER_NAME} bash -c "pg_dump -U ${POSTGRES_USER} ${POSTGRES_DB} > backups/${POSTGRES_DB}${FECHA}.sql"
+echo [`date`] ___ OK >> $LOG_DIR
+echo ------------------------------------ >> $LOG_DIR
+
+echo [`date`] ::Comprimiendo ${WORKDIR}/backups/${POSTGRES_DB}${FECHA}.sql a ${WORKDIR}/backups/${POSTGRES_DB}${FECHA}.zip >> $LOG_DIR
+cd backups
+zip -r ${POSTGRES_DB}${FECHA}.zip ${POSTGRES_DB}${FECHA}.sql
+cd ${WORKDIR}
+echo [`date`] ___ OK >> $LOG_DIR
+echo ------------------------------------ >> $LOG_DIR
+
+echo [`date`] ::Copiando de ${WORKDIR}/backups/${POSTGRES_DB}${FECHA}.zip a ${DEST} >> $LOG_DIR
+scp backups/${POSTGRES_DB}${FECHA}.zip ${DEST}
+echo [`date`] ___ OK >> $LOG_DIR
+echo ------------------------------------ >> $LOG_DIR
+
+echo [`date`] ::Eliminando ${WORKDIR}/backups/${POSTGRES_DB}${FECHA}.* >> $LOG_DIR
+rm backups/${POSTGRES_DB}${FECHA}.*
+echo [`date`] ___ OK >> $LOG_DIR
+echo ------------------------------------ >> $LOG_DIR
+
+# Vuelvo al directorio actual
+cd ${DIR}
+exit 0

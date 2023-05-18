@@ -1,0 +1,12 @@
+# Variables de entorno
+.env
+
+# Volumenes de docker
+database
+backups
+
+# Logs
+backup.log
+
+# Script Backup
+backup_cron.sh
