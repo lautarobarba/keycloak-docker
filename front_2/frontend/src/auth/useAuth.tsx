@@ -1,34 +1,47 @@
-import Keycloak from "keycloak-js";
+import keycloak from "./keycloak";
 import { useEffect, useState } from "react";
 
 export const useAuth = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  // const [keycloakState, setKeycloakState] = useState<any | undefined>();
+  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [token, setToken] = useState<string | undefined>();
+  const [userId, setUserId] = useState<string | undefined>();
+  const [user, setUser] = useState<any | undefined>();
 
-  const client = new Keycloak({
-    url: "http://localhost:8001",
-    realm: "demo_realm",
-    clientId: "react_demo_client",
-  });
-
-  const getLoginStatus = async () => {
-    // const loginStatus = await client.init({
-    //   onLoad: "login-required",
-    // });
-
-    // console.log({ loginStatus });
-
-    client
-      .init({
-        onLoad: "login-required",
-      })
-      .then((response) => setIsLogin(response));
+  const setAuth = async () => {
+    const keycloakAuthenticated = await keycloak.init({
+      // onLoad: "login-required",
+      onLoad: "check-sso",
+    });
+    setIsAuth(Boolean(keycloakAuthenticated));
+    refreshUserData();
   };
 
-  // Cuando se renderiza por primera vez
-  //    se verifica el logueo
+  const refreshUserData = () => {
+    setToken(keycloak.token);
+    setUserId(keycloak.subject);
+    setUser(keycloak.tokenParsed);
+  };
+
+  const login = async () => {
+    console.log("login");
+    keycloak.login();
+  };
+
+  const logout = async () => {
+    console.log("logout");
+    keycloak.logout();
+  };
+
+  // Init client
   useEffect(() => {
-    getLoginStatus();
+    setAuth();
   }, []);
 
-  return { isLogin };
+  // Refresh user data
+  useEffect(() => {
+    if (isAuth) refreshUserData();
+  }, [isAuth]);
+
+  return { isAuth, login, logout, user, userId, token };
 };
