@@ -1,0 +1,59 @@
+version: "3.8"
+name: demo_keycloak
+services:
+  keycloak_db:
+    container_name: keycloak_db
+    image: keycloak_db:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./database_1/Dockerfile
+    env_file: ./database_1/.env
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+    restart: always
+    ports:
+      - ${DB1_PORT}:5432
+    volumes:
+      - ./database_1/database/data:/var/lib/postgresql/data
+      - ./database_1/backups:/backups
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  nest_db:
+    container_name: nest_db
+    image: nest_db:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./database_2/Dockerfile
+    env_file: ./database_2/.env
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+    restart: always
+    ports:
+      - ${DB2_PORT}:5432
+    volumes:
+      - ./database_2/database/data:/var/lib/postgresql/data
+      - ./database_2/backups:/backups
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  laravel_db:
+    container_name: laravel_db
+    image: laravel_db:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./database_3/Dockerfile
+    env_file: ./database_3/.env
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+    restart: always
+    ports:
+      - ${DB3_PORT}:5432
+    volumes:
+      - ./database_3/database/data:/var/lib/postgresql/data
+      - ./database_3/backups:/backups
+    extra_hosts:
+      - host.docker.internal:host-gateway
