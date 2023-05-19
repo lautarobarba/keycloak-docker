@@ -1,0 +1,21 @@
+body {
+	background-color: white;
+}
+
+.email-title {
+	text-align: center;
+}
+
+.center-content {
+	display: flex;
+	justify-content: center;
+}
+
+/* #email-image {
+	width: '200px';
+} */
+
+.right-content {
+	display: flex;
+	justify-content: right;
+}

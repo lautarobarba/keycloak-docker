@@ -125,3 +125,31 @@ services:
       - ./front_2/frontend:/app
     extra_hosts:
       - host.docker.internal:host-gateway
+
+  nest_api:
+    container_name: nest_api
+    image: nest_api:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./back_1/Dockerfile
+    command: bash -c "npm install && npm run start"
+    depends_on:
+      - nest_db
+      # - redis
+    restart: always
+    env_file: ./back_1/.env
+    environment:
+      - DB_HOST=host.docker.internal
+    ports:
+      - ${NEST_PORT}:3000
+    volumes:
+      - ./back_1/backend:/backend
+    # links:
+    #   - redis
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  # redis:
+  #   image: "redis:alpine"
+  #   restart: always

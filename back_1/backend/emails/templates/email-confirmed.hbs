@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		{{!-- 
+			Para importar CSS tengo que usar la ruta del host del contenedor
+				o alguna ruta estática de donde handlebars pueda ejecutar una 
+				request e injecta el css antes de enviarlo
+			
+			Ejemplos:
+				<link rel="stylesheet" href="http://host.docker.internal/api/assets/css/styles.css">
+				<link rel="stylesheet" href="http://host.docker.internal:7000/api/assets/css/styles.css">
+				<link rel="stylesheet" href="{{ ulrToImportCss }}/api/assets/css/styles.css">
+		--}}
+
+		<link rel="stylesheet" href="{{ ulrToImportCssInEmail }}/api/assets/css/styles.css">
+		<title>TITULO: Confirmación de correo electrónico ACCEPTADA</title>
+
+	</head>
+	<body>
+		<h1 class="email-title">Confirmación de correo electrónico ACCEPTADA</h1>
+		<div class="center-content">
+			<img width="300px" src="{{ ulrToImportImagesInEmail }}/api/assets/images/logo.png" >
+		</div>
+		<p>¡¡Hola {{ user.firstname }} {{ user.lastname }}!!</p>
+		<p>Te informamos que tu cuenta se encuentra ACTIVADA y ya puedes disfrutar de todos los beneficios de nuestro sitio web NOMBRE_SITIO</p>
+		<br>
+
+		<div class="right-content">
+			<p>Saludos de parte del equipo de NOMBRE_SITIO!</p>
+		</div>
+	</body>
+</html>
