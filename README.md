@@ -4,12 +4,12 @@ En esta demo se van a levantar los siguientes servicios
 
 - Fullstack:
 
-  - Keycloak
+  - Keycloak: keycloak
 
 - Frontends:
 
-  - Front_1: react_app (create-react-app)
-  - Front_2: next_app ()
+  - Front_1: next_app (create-next-app)
+  - Front_2: react_app (create-react-app)
 
 - Backends:
 
