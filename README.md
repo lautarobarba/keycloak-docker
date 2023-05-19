@@ -23,6 +23,8 @@ En esta demo se van a levantar los siguientes servicios
 
 # Schema
 
+![Schema](https://raw.githubusercontent.com/lautarobarba/keycloak-docker/main/images/schema.png "Schema")
+
 # Setup
 
 ## Keycloak
