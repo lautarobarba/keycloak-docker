@@ -38,10 +38,10 @@ En esta demo se van a levantar los siguientes servicios
 4° Crear nuevos clients para las aplicaciones.
 
 - Client ID, Name, Description: next_demo_client.
-  Valid redirect URIs, Valid post logout redirect URIs, Web origins: http://localhost:8002/\*
+  Valid redirect URIs: http://localhost:8002/\*. Valid post logout redirect URIs, Web origins: +
 
 - Client ID, Name, Description: react_demo_client.
-  Valid redirect URIs, Valid post logout redirect URIs, Web origins: http://localhost:8003/\*
+  Valid redirect URIs: http://localhost:8003/\*. Valid post logout redirect URIs, Web origins: +
 
 5° Crear usuarios:
 
@@ -50,5 +50,3 @@ En esta demo se van a levantar los siguientes servicios
 - Username: usuarioprueba2. Email: usuarioprueba2@gmail.com. First name: Usuario2. Last name: Prueba2.
 
 Después de crearlos tenemos que ir a la pestaña de credenciales y poner una contraseña temporal que se cambia despues del primer inicio: 1234. Dejar marcada la opción temporal.
-
-TODO: hasta aca tira error de cors. Falta revisar.

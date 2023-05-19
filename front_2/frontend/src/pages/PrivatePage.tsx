@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAuth } from "../auth/useAuth";
 
 export const PrivatePage = () => {
-  const { isAuth, login, logout, user, userId, token } = useAuth();
+  const { isAuth, login, logout, user, userId, token, isLoading } = useAuth();
 
   useEffect(() => {
     if (user && userId && token) {
@@ -16,15 +16,20 @@ export const PrivatePage = () => {
   return (
     <>
       <h2>Ruta privada</h2>
-      {isAuth ? (
+      {isLoading && <p>Cargando...</p>}
+      {!isLoading && (
         <>
-          <p>Usuario autenticado 😃</p>
-          <button onClick={logout}>SALIR</button>
-        </>
-      ) : (
-        <>
-          <p>Usuario no autenticado 😡</p>
-          <button onClick={login}>INICIAR SESIÓN</button>
+          {isAuth ? (
+            <>
+              <p>Usuario autenticado 😃</p>
+              <button onClick={logout}>SALIR</button>
+            </>
+          ) : (
+            <>
+              <p>Usuario no autenticado 😡</p>
+              <button onClick={login}>INICIAR SESIÓN</button>
+            </>
+          )}
         </>
       )}
     </>
