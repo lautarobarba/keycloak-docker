@@ -29,5 +29,26 @@ En esta demo se van a levantar los siguientes servicios
 
 ## Keycloak
 
-1° Crear un realm. Los usuarios pertenecientes a este realm sólo funcionarán para los clientes conectados a este realm.
-2° Crear 1 role.
+1° Ingresar a keycloak en http://localhost:8001. Loguear con User: kadmin. Passwd: kadmin.
+
+2° Crear un realm Realm: demo_realm. Los usuarios pertenecientes a este realm sólo funcionarán para los clientes conectados a este realm.
+
+3° Configurar en Realm settings->Localization->Español.
+
+4° Crear nuevos clients para las aplicaciones.
+
+- Client ID, Name, Description: next_demo_client.
+  Valid redirect URIs, Valid post logout redirect URIs, Web origins: http://localhost:8002/\*
+
+- Client ID, Name, Description: react_demo_client.
+  Valid redirect URIs, Valid post logout redirect URIs, Web origins: http://localhost:8003/\*
+
+5° Crear usuarios:
+
+- Username: usuarioprueba1. Email: usuarioprueba1@gmail.com. First name: Usuario1. Last name: Prueba1.
+
+- Username: usuarioprueba2. Email: usuarioprueba2@gmail.com. First name: Usuario2. Last name: Prueba2.
+
+Después de crearlos tenemos que ir a la pestaña de credenciales y poner una contraseña temporal que se cambia despues del primer inicio: 1234. Dejar marcada la opción temporal.
+
+TODO: hasta aca tira error de cors. Falta revisar.

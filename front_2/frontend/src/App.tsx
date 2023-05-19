@@ -1,12 +1,24 @@
 import React from "react";
-// import { Counter } from "./features/counter/Counter";
-import "./App.css";
-import { MainLayout } from "./layouts/MainLayout";
+import { PublicPage } from "./pages/PublicPage";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { PrivatePage } from "./pages/PrivatePage";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <PublicPage />,
+  },
+  {
+    path: "/admin",
+    element: <PrivatePage />,
+  },
+]);
 
 export const App = () => {
   return (
     <div className="App">
-      <MainLayout />
+      <h1>React APP</h1>
+      <RouterProvider router={router} />
     </div>
   );
 };
