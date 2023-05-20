@@ -21,7 +21,7 @@ export const PrivatePage = () => {
         <>
           {isAuth ? (
             <>
-              <p>Usuario autenticado 😃</p>
+              <p>Usuario autenticado 😃 (({user.email}))</p>
               <button onClick={logout}>SALIR</button>
             </>
           ) : (

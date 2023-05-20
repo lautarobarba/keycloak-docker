@@ -20,24 +20,24 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  # nest_db:
-  #   container_name: nest_db
-  #   image: nest_db:1.0.0
-  #   build:
-  #     context: .
-  #     target: production
-  #     dockerfile: ./database_2/Dockerfile
-  #   env_file: ./database_2/.env
-  #   environment:
-  #     - TZ=America/Argentina/Buenos_Aires
-  #   restart: always
-  #   ports:
-  #     - ${DB2_PORT}:5432
-  #   volumes:
-  #     - ./database_2/database/data:/var/lib/postgresql/data
-  #     - ./database_2/backups:/backups
-  #   extra_hosts:
-  #     - host.docker.internal:host-gateway
+  nest_db:
+    container_name: nest_db
+    image: nest_db:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./database_2/Dockerfile
+    env_file: ./database_2/.env
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+    restart: always
+    ports:
+      - ${DB2_PORT}:5432
+    volumes:
+      - ./database_2/database/data:/var/lib/postgresql/data
+      - ./database_2/backups:/backups
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   # laravel_db:
   #   container_name: laravel_db
@@ -128,29 +128,29 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  # nest_api:
-  #   container_name: nest_api
-  #   image: nest_api:1.0.0
-  #   build:
-  #     context: .
-  #     target: development
-  #     dockerfile: ./back_1/Dockerfile
-  #   command: bash -c "npm install && npm run start"
-  #   depends_on:
-  #     - nest_db
-  #     # - redis
-  #   restart: always
-  #   env_file: ./back_1/.env
-  #   environment:
-  #     - DB_HOST=host.docker.internal
-  #   ports:
-  #     - ${NEST_PORT}:3000
-  #   volumes:
-  #     - ./back_1/backend:/backend
-  #   # links:
-  #   #   - redis
-  #   extra_hosts:
-  #     - host.docker.internal:host-gateway
+  nest_api:
+    container_name: nest_api
+    image: nest_api:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./back_1/Dockerfile
+    command: bash -c "npm install && npm run start"
+    depends_on:
+      - nest_db
+      # - redis
+    restart: always
+    env_file: ./back_1/.env
+    environment:
+      - DB_HOST=host.docker.internal
+    ports:
+      - ${NEST_PORT}:3000
+    volumes:
+      - ./back_1/backend:/backend
+    # links:
+    #   - redis
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   # # redis:
   # #   image: "redis:alpine"

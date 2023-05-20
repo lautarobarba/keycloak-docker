@@ -1,30 +1,30 @@
-import { ApiProperty } from '@nestjs/swagger';
+// import { ApiProperty } from '@nestjs/swagger';
 
-export class LoginDto {
-	@ApiProperty()
-	email: string;
+// export class LoginDto {
+// 	@ApiProperty()
+// 	email: string;
 
-	@ApiProperty()
-	password: string;
-}
+// 	@ApiProperty()
+// 	password: string;
+// }
 
-export class SessionDto {
-	@ApiProperty()
-	accessToken: string;
+// export class SessionDto {
+// 	@ApiProperty()
+// 	accessToken: string;
 
-	@ApiProperty()
-	refreshToken: string;
-}
+// 	@ApiProperty()
+// 	refreshToken: string;
+// }
 
-export class ChangePasswordDto {
-	@ApiProperty()
-	id: number;
+// export class ChangePasswordDto {
+// 	@ApiProperty()
+// 	id: number;
 
-	@ApiProperty()
-	newPassword: string;
-}
+// 	@ApiProperty()
+// 	newPassword: string;
+// }
 
-export class RecoverPasswordDto {
-	@ApiProperty()
-	email: string;
-}
+// export class RecoverPasswordDto {
+// 	@ApiProperty()
+// 	email: string;
+// }
