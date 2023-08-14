@@ -93,7 +93,7 @@ services:
     image: next_app:1.0.0
     build:
       context: .
-      target: development
+      target: base
       dockerfile: ./front_1/Dockerfile
     command: bash -c "npm install && npm run dev"
     restart: always
@@ -107,24 +107,24 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  react_app:
-    container_name: react_app
-    image: react_app:1.0.0
-    build:
-      context: .
-      target: development
-      dockerfile: ./front_2/Dockerfile
-    command: bash -c "npm install && npm run start"
-    restart: always
-    env_file: ./front_2/.env
-    environment:
-      - PORT=${REACT_PORT}
-    ports:
-      - ${REACT_PORT}:${REACT_PORT}
-    volumes:
-      - ./front_2/frontend:/app
-    extra_hosts:
-      - host.docker.internal:host-gateway
+  # react_app:
+  #   container_name: react_app
+  #   image: react_app:1.0.0
+  #   build:
+  #     context: .
+  #     target: development
+  #     dockerfile: ./front_2/Dockerfile
+  #   command: bash -c "npm install && npm run start"
+  #   restart: always
+  #   env_file: ./front_2/.env
+  #   environment:
+  #     - PORT=${REACT_PORT}
+  #   ports:
+  #     - ${REACT_PORT}:${REACT_PORT}
+  #   volumes:
+  #     - ./front_2/frontend:/app
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
 
   nest_api:
     container_name: nest_api
