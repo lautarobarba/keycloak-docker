@@ -31,8 +31,8 @@ async function bootstrap() {
 
   // Configuración para swagger
   const config = new DocumentBuilder()
-    .setTitle("API - JARDÍN BOTÁNICO USHUAIA")
-    .setDescription("API jardín botánico ushuaia")
+    .setTitle("API Demo NestJS - KeyCloak")
+    .setDescription("API Demo NestJS - KeyCloak")
     .setVersion("1.0")
     .addBearerAuth()
     .build();

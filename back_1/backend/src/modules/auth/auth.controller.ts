@@ -38,7 +38,6 @@ import { JwtAuthenticationGuard } from "./guards/jwt-authentication.guard";
 import { IsEmailConfirmedGuard } from "./guards/is-email-confirmed.guard";
 import { RoleGuard } from "modules/auth/guards/role.guard";
 import { Role } from "../auth/role.enum";
-import { LocalFilesInterceptor } from "modules/utils/localFiles.interceptor";
 import { ERROR_MESSAGE } from "modules/utils/error-message";
 import { RequestWithUser } from "./request-with-user.interface";
 

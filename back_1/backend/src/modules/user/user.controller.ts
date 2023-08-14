@@ -31,10 +31,8 @@ import { UserService } from "./user.service";
 import { RoleGuard } from "modules/auth/guards/role.guard";
 import { Role } from "../auth/role.enum";
 import { IsEmailConfirmedGuard } from "modules/auth/guards/is-email-confirmed.guard";
-import { LocalFilesInterceptor } from "modules/utils/localFiles.interceptor";
 import { createReadStream } from "fs";
 import { join } from "path";
-import { Picture } from "modules/utils/picture.entity";
 
 @Controller("user")
 @ApiTags("Usuarios")
@@ -166,37 +164,5 @@ export class UserController {
   ): Promise<void> {
     this._logger.debug("DELETE: /api/user/:id");
     return this._userService.delete(id);
-  }
-
-  @Get("profile-picture/:id")
-  // @UseGuards(IsEmailConfirmedGuard())
-  @UseInterceptors(ClassSerializerInterceptor)
-  // @ApiBearerAuth()
-  @ApiResponse({
-    status: HttpStatus.OK,
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: "Error: Not Found",
-  })
-  // @ApiResponse({
-  // 	status: HttpStatus.UNAUTHORIZED,
-  // 	description: 'Error: Unauthorized',
-  // })
-  async getProfilePicture(
-    @Res({ passthrough: true }) response: Response,
-    @Param("id") id: number
-  ): Promise<StreamableFile> {
-    this._logger.debug("GET: /api/user/profile-picture/:id");
-    const profilePicture: Picture = await this._userService.getProfilePicture(
-      id
-    );
-
-    const stream = createReadStream(join(process.cwd(), profilePicture.path));
-    response.set({
-      "Content-Disposition": `inline; filename="${profilePicture.fileName}"`,
-      "Content-Type": profilePicture.mimetype,
-    });
-    return new StreamableFile(stream);
   }
 }

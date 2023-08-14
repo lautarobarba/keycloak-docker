@@ -3,7 +3,6 @@ import { JwtModule } from "@nestjs/jwt";
 import { UserModule } from "modules/user/user.module";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { MailerModule } from "modules/mailer/mailer.module";
 import { LocalStrategy } from "./strategies/local.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 
@@ -18,7 +17,6 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
       }),
     }),
     UserModule,
-    MailerModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],

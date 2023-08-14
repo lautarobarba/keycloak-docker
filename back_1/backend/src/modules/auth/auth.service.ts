@@ -19,7 +19,6 @@ import {
   RecoverPasswordDto,
   SessionDto,
 } from "./auth.dto";
-import { MailerService } from "../mailer/mailer.service";
 import { Role } from "../auth/role.enum";
 import { ERROR_MESSAGE } from "modules/utils/error-message";
 
@@ -27,8 +26,7 @@ import { ERROR_MESSAGE } from "modules/utils/error-message";
 export class AuthService {
   constructor(
     private readonly _userService: UserService,
-    private readonly _jwtService: JwtService,
-    private readonly _mailerService: MailerService
+    private readonly _jwtService: JwtService
   ) {}
   private readonly _logger = new Logger(AuthService.name);
 
@@ -53,14 +51,6 @@ export class AuthService {
     // await this.updateRefreshToken(user.id, tokens.refreshToken);
     const tokenPayload: TokenPayload = { userId: user.id };
     const token: string = this._jwtService.sign(tokenPayload);
-
-    // Envío correo de registro a su email
-    await this._mailerService.sendRegistrationEmail(
-      ulrToImportCssInEmail,
-      ulrToImportImagesInEmail,
-      user.email,
-      token
-    );
 
     return token;
   }
