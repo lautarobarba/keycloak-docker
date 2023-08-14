@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		{{!-- 
+			Para importar CSS tengo que usar la ruta del host del contenedor
+				o alguna ruta estática de donde handlebars pueda ejecutar una 
+				request e injecta el css antes de enviarlo
+			
+			Ejemplos:
+				<link rel="stylesheet" href="http://host.docker.internal/api/assets/css/styles.css">
+				<link rel="stylesheet" href="http://host.docker.internal:7000/api/assets/css/styles.css">
+				<link rel="stylesheet" href="{{ ulrToImportCss }}/api/assets/css/styles.css">
+		--}}
+
+		<link rel="stylesheet" href="{{ ulrToImportCssInEmail }}/api/assets/css/styles.css">
+		<title>Registro Jardín Botánico Ushuaia</title>
+
+	</head>
+	<body>
+		<h1 class="email-title">Gracias por registrarte en la Biblioteca del bosque</h1>
+		<div class="center-content">
+			<img width="300px" src="{{ ulrToImportImagesInEmail }}/api/assets/images/logo.jpg" >
+		</div>
+		<p>¡¡Hola {{ user.firstname }}!!</p>
+		<p>Te damos la bienvenida de parte de todos los miembros del Jardín Botánico Ushuaia.</p>
+		<p>Muchas gracias por registrarte.</p>
+
+		<p>El último paso para confirmar tu registro es validar tu cuenta de correo electrónico.</p>
+
+		<p>Para validarla sólo debes verificar tu correo electrónico presionando el siguiente botón:</p>
+		<button class="center-content">
+			<a href="{{ emailConfirmationUrl }}">Validar cuenta</a>
+		</button>
+		<br>
+		
+		<p>Si tienes problemas prueba ingresando el enlace manualmente:</p>
+		<p><strong>{{ emailConfirmationUrl }}</strong></p>
+		<br>
+
+		<div class="right-content">
+			<p>Jardín Botánico Ushuaia</p>
+		</div>
+	</body>
+</html>

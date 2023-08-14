@@ -1,40 +1,47 @@
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Injectable, mixin, NestInterceptor, Type } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
-import { diskStorage } from 'multer';
+import { FileFieldsInterceptor } from "@nestjs/platform-express";
+import { Injectable, mixin, NestInterceptor, Type } from "@nestjs/common";
+import {
+  MulterField,
+  MulterOptions,
+} from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
+import { diskStorage } from "multer";
 
-
-interface LocalFilesInterceptorOptions {
-  fieldName: string;
+interface FileFieldsInterceptorOptions {
+  files: MulterField[];
   path?: string;
-  fileFilter?: MulterOptions['fileFilter'];
-  limits?: MulterOptions['limits'];
+  fileFilter?: MulterOptions["fileFilter"];
+  limits?: MulterOptions["limits"];
 }
 
-export const LocalFilesInterceptor = (options: LocalFilesInterceptorOptions): Type<NestInterceptor> => {
+export const LocalFilesInterceptor = (
+  options: FileFieldsInterceptorOptions
+): Type<NestInterceptor> => {
   @Injectable()
   class Interceptor implements NestInterceptor {
     fileInterceptor: NestInterceptor;
     constructor() {
-      const filesDestination = process.env.UPLOAD_FILE_DETINATION ?? './uploads';
+      const filesDestination =
+        process.env.UPLOAD_FILE_DETINATION ?? "./uploads";
 
-      const destination = `${filesDestination}${options.path}`
+      const destination = `${filesDestination}${options.path}`;
 
       const multerOptions: MulterOptions = {
         storage: diskStorage({
-          destination
+          destination,
         }),
         fileFilter: options.fileFilter,
-        limits: options.limits
-      }
+        limits: options.limits,
+      };
 
-      this.fileInterceptor = new (FileInterceptor(options.fieldName, multerOptions));
+      this.fileInterceptor = new (FileFieldsInterceptor(
+        options.files,
+        multerOptions
+      ))();
     }
 
-    intercept(...args: Parameters<NestInterceptor['intercept']>) {
+    intercept(...args: Parameters<NestInterceptor["intercept"]>) {
       return this.fileInterceptor.intercept(...args);
     }
   }
   return mixin(Interceptor);
-}
+};

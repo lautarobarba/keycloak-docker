@@ -11,6 +11,6 @@ export class AppService {
 		const date: Date = new Date();
 		const year: string = date.getFullYear().toString();
 
-		return `<h1 style="text-align: center;">API NESTJS</h1> <p style="position: absolute; bottom: 20px; text-align: center; width: 99%;">Documentación disponible en <a href="/api/docs">/api/docs</a>.</p> <p style="position: absolute; bottom: 0px; text-align: center; width: 99%;">${year} - NestJS</p>`;
+		return `<h1 style="text-align: center;">API - JARDÍN BOTÁNICO USHUAIA</h1> <p style="position: absolute; bottom: 20px; text-align: center; width: 99%;">Documentación disponible en <a href="/api/docs">/api/docs</a>.</p> <p style="position: absolute; bottom: 0px; text-align: center; width: 99%;">${year} - JBU</p>`;
 	}
 }

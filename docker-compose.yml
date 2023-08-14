@@ -1,24 +1,24 @@
 version: "3.8"
 name: demo_keycloak
 services:
-  keycloak_db:
-    container_name: keycloak_db
-    image: keycloak_db:1.0.0
-    build:
-      context: .
-      target: production
-      dockerfile: ./database_1/Dockerfile
-    env_file: ./database_1/.env
-    environment:
-      - TZ=America/Argentina/Buenos_Aires
-    restart: always
-    ports:
-      - ${DB1_PORT}:5432
-    volumes:
-      - ./database_1/database/data:/var/lib/postgresql/data
-      - ./database_1/backups:/backups
-    extra_hosts:
-      - host.docker.internal:host-gateway
+  # keycloak_db:
+  #   container_name: keycloak_db
+  #   image: keycloak_db:1.0.0
+  #   build:
+  #     context: .
+  #     target: production
+  #     dockerfile: ./database_1/Dockerfile
+  #   env_file: ./database_1/.env
+  #   environment:
+  #     - TZ=America/Argentina/Buenos_Aires
+  #   restart: always
+  #   ports:
+  #     - ${DB1_PORT}:5432
+  #   volumes:
+  #     - ./database_1/database/data:/var/lib/postgresql/data
+  #     - ./database_1/backups:/backups
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
 
   nest_db:
     container_name: nest_db
@@ -58,35 +58,35 @@ services:
   #   extra_hosts:
   #     - host.docker.internal:host-gateway
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    container_name: keycloak
-    command: start-dev
-    depends_on:
-      - keycloak_db
-    restart: always
-    env_file: ./keycloak/.env
-    environment:
-      # Credentials for admin account
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+  # keycloak:
+  #   image: quay.io/keycloak/keycloak:latest
+  #   container_name: keycloak
+  #   command: start-dev
+  #   depends_on:
+  #     - keycloak_db
+  #   restart: always
+  #   env_file: ./keycloak/.env
+  #   environment:
+  #     # Credentials for admin account
+  #     KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER}
+  #     KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
 
-      # Enable health and metrics support
-      KC_HEALTH_ENABLED: true
-      KC_METRICS_ENABLED: true
+  #     # Enable health and metrics support
+  #     KC_HEALTH_ENABLED: true
+  #     KC_METRICS_ENABLED: true
 
-      # Credentials for storing into an external database
-      KC_DB: ${DBK_VENDOR}
-      KC_DB_URL_HOST: ${DBK_HOST}
-      KC_DB_URL_PORT: ${DBK_PORT}
-      KC_DB_URL_DATABASE: ${DBK_NAME}
-      KC_DB_USERNAME: ${DBK_USER}
-      KC_DB_PASSWORD: ${DBK_PASSWORD}
+  #     # Credentials for storing into an external database
+  #     KC_DB: ${DBK_VENDOR}
+  #     KC_DB_URL_HOST: ${DBK_HOST}
+  #     KC_DB_URL_PORT: ${DBK_PORT}
+  #     KC_DB_URL_DATABASE: ${DBK_NAME}
+  #     KC_DB_USERNAME: ${DBK_USER}
+  #     KC_DB_PASSWORD: ${DBK_PASSWORD}
 
-    ports:
-      - ${KEYCLOAK_PORT}:8080
-    extra_hosts:
-      - host.docker.internal:host-gateway
+  #   ports:
+  #     - ${KEYCLOAK_PORT}:8080
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
 
   next_app:
     container_name: next_app
@@ -115,8 +115,6 @@ services:
       target: development
       dockerfile: ./front_2/Dockerfile
     command: bash -c "npm install && npm run start"
-    depends_on:
-      - keycloak
     restart: always
     env_file: ./front_2/.env
     environment:
@@ -133,7 +131,7 @@ services:
     image: nest_api:1.0.0
     build:
       context: .
-      target: development
+      target: base
       dockerfile: ./back_1/Dockerfile
     command: bash -c "npm install && npm run start"
     depends_on:
@@ -146,7 +144,7 @@ services:
     ports:
       - ${NEST_PORT}:3000
     volumes:
-      - ./back_1/backend:/backend
+      - ./back_1/backend:/app
     # links:
     #   - redis
     extra_hosts:
