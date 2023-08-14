@@ -1,35 +1,42 @@
-"use client";
+'use client';
+import { useContext, useEffect } from "react";
+import Link from "next/link";
+import { AuthContext } from "@/providers/AuthProvider";
 
-import { useAuth } from "@/auth/useAuth";
-import { useEffect } from "react";
+const AdminDashboard = () => {
+  const { logout } = useContext(AuthContext);
 
-const PrivatePage = () => {
-  const { isAuth, login, logout, user, userId, token } = useAuth();
-
-  useEffect(() => {
-    if (user && userId && token) {
-      console.log({ user });
-      console.log({ userId });
-      console.log({ token });
-    }
-  }, [user, userId, token]);
+  const handleLogout = () => {
+    logout();
+  }
 
   return (
     <>
-      <h2>Ruta privada</h2>
-      {isAuth ? (
+      <br />
+      <h1 className="text-center">{"[[ AdminDashboard ]]"}</h1>
+      <div className="flex flex-col flex-nowrap justify-center">
+        <hr className="m-auto w-80" />
+      </div>
+      <Link href="/" className="ml-5 text-blue-500">
+        {">>"} Volver ◀️
+      </Link>
+      <hr />
+      <button className="bg-blue-500 p-4 rounded-md text-white shadow-md" onClick={() => handleLogout()}>SALIR</button>
+
+      <hr />
+
+      {/* {session.status === 'loading' &&
+        <p>BUSCANDO DATOS DEL USUARIO...</p>
+      }
+      {session.status === 'authenticated' && (
         <>
-          <p>Usuario autenticado 😃 (({user.email}))</p>
-          <button onClick={logout}>SALIR</button>
+          <h1>Usuario loggeado</h1>
+          <pre>{JSON.stringify(session)}</pre>
         </>
-      ) : (
-        <>
-          <p>Usuario no autenticado 😡</p>
-          <button onClick={login}>INICIAR SESIÓN</button>
-        </>
-      )}
+      )} */}
+      {/* <SmallFooter /> */}
     </>
   );
 };
 
-export default PrivatePage;
+export default AdminDashboard;

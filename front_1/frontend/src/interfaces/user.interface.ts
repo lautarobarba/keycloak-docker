@@ -1,5 +1,3 @@
-import { Picture } from "./picture.interface";
-
 export enum Role {
   USER = "USER",
   EDITOR = "EDITOR",
@@ -17,7 +15,7 @@ export interface User {
   isEmailConfirmed: boolean;
   firstname: string;
   lastname: string;
-  profilePicture?: Picture;
+  // profilePicture?: Picture;
   status: Status;
   role: Role;
   createdAt: Date;
@@ -38,7 +36,7 @@ export interface UpdateUserDto {
   isEmailConfirmed?: boolean;
   firstname?: string;
   lastname?: string;
-  profilePicture?: Picture | null;
+  // profilePicture?: Picture | null;
   status?: Status;
   role?: Role;
 }

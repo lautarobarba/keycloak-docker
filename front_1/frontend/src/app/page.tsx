@@ -1,15 +1,13 @@
-import Link from "next/link";
-import RootLayout from "./layout";
+import { PublicNavbar } from "@/components/navbar/PublicNavbar";
+import { ConfigMenu } from "@/components/config-button/ConfigMenu";
 
-const IndexPage = () => {
+const Home = () => {
   return (
     <main>
-      <h1 className="text-large">Ruta públia</h1>
-      <Link href="/admin" className="text-blue-500">
-        IR A TODO APP
-      </Link>
+      <PublicNavbar />
+      <ConfigMenu />
     </main>
   );
 };
 
-export default IndexPage;
+export default Home;
