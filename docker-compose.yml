@@ -1,35 +1,41 @@
 version: "3.8"
 name: demo_keycloak
 services:
-  # keycloak_db:
-  #   container_name: keycloak_db
-  #   image: keycloak_db:1.0.0
-  #   build:
-  #     context: .
-  #     target: production
-  #     dockerfile: ./database_1/Dockerfile
-  #   env_file: ./database_1/.env
-  #   environment:
-  #     - TZ=America/Argentina/Buenos_Aires
-  #   restart: always
-  #   ports:
-  #     - ${DB1_PORT}:5432
-  #   volumes:
-  #     - ./database_1/database/data:/var/lib/postgresql/data
-  #     - ./database_1/backups:/backups
-  #   extra_hosts:
-  #     - host.docker.internal:host-gateway
+  keycloak_db:
+    container_name: keycloak_db
+    image: keycloak_db:1.0.0
+    build:
+      context: .
+      target: base
+      dockerfile: ./database_1/Dockerfile
+    env_file: .env
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+      - POSTGRES_USER=${DB1_USER}
+      - POSTGRES_PASSWORD=${DB1_PASSWORD}
+      - POSTGRES_DB=${DB1_NAME}
+    restart: always
+    ports:
+      - ${DB1_PORT}:5432
+    volumes:
+      - ./database_1/database/data:/var/lib/postgresql/data
+      - ./database_1/backups:/backups
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   nest_db:
     container_name: nest_db
     image: nest_db:1.0.0
     build:
       context: .
-      target: production
+      target: base
       dockerfile: ./database_2/Dockerfile
-    env_file: ./database_2/.env
+    env_file: .env
     environment:
       - TZ=America/Argentina/Buenos_Aires
+      - POSTGRES_USER=${DB2_USER}
+      - POSTGRES_PASSWORD=${DB2_PASSWORD}
+      - POSTGRES_DB=${DB2_NAME}
     restart: always
     ports:
       - ${DB2_PORT}:5432
@@ -39,24 +45,27 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  # laravel_db:
-  #   container_name: laravel_db
-  #   image: laravel_db:1.0.0
-  #   build:
-  #     context: .
-  #     target: production
-  #     dockerfile: ./database_3/Dockerfile
-  #   env_file: ./database_3/.env
-  #   environment:
-  #     - TZ=America/Argentina/Buenos_Aires
-  #   restart: always
-  #   ports:
-  #     - ${DB3_PORT}:5432
-  #   volumes:
-  #     - ./database_3/database/data:/var/lib/postgresql/data
-  #     - ./database_3/backups:/backups
-  #   extra_hosts:
-  #     - host.docker.internal:host-gateway
+  laravel_db:
+    container_name: laravel_db
+    image: laravel_db:1.0.0
+    build:
+      context: .
+      target: base
+      dockerfile: ./database_3/Dockerfile
+    env_file: .env
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+      - POSTGRES_USER=${DB3_USER}
+      - POSTGRES_PASSWORD=${DB3_PASSWORD}
+      - POSTGRES_DB=${DB3_NAME}
+    restart: always
+    ports:
+      - ${DB3_PORT}:5432
+    volumes:
+      - ./database_3/database/data:/var/lib/postgresql/data
+      - ./database_3/backups:/backups
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   # keycloak:
   #   image: quay.io/keycloak/keycloak:latest
@@ -88,24 +97,25 @@ services:
   #   extra_hosts:
   #     - host.docker.internal:host-gateway
 
-  next_app:
-    container_name: next_app
-    image: next_app:1.0.0
-    build:
-      context: .
-      target: base
-      dockerfile: ./front_1/Dockerfile
-    command: bash -c "npm install && npm run dev"
-    restart: always
-    env_file: ./front_1/.env
-    environment:
-      - PORT=${NEXT_PORT}
-    ports:
-      - ${NEXT_PORT}:${NEXT_PORT}
-    volumes:
-      - ./front_1/frontend:/app
-    extra_hosts:
-      - host.docker.internal:host-gateway
+  # next_app:
+  #   container_name: next_app
+  #   image: next_app:1.0.0
+  #   build:
+  #     context: .
+  #     target: base
+  #     dockerfile: ./front_1/Dockerfile
+  #   command: bash /start.sh
+  #   restart: always
+  #   env_file: .env
+  #   environment:
+  #     - PORT=${NEXT_PORT}
+  #   ports:
+  #     - ${NEXT_PORT}:${NEXT_PORT}
+  #   volumes:
+  #     - ./front_1/frontend:/app
+  #     - ./front_1/start.sh:/start.sh
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
 
   # react_app:
   #   container_name: react_app
@@ -126,29 +136,29 @@ services:
   #   extra_hosts:
   #     - host.docker.internal:host-gateway
 
-  nest_api:
-    container_name: nest_api
-    image: nest_api:1.0.0
-    build:
-      context: .
-      target: base
-      dockerfile: ./back_1/Dockerfile
-    command: bash -c "npm install && npm run start"
-    depends_on:
-      - nest_db
-      # - redis
-    restart: always
-    env_file: ./back_1/.env
-    environment:
-      - DB_HOST=host.docker.internal
-    ports:
-      - ${NEST_PORT}:3000
-    volumes:
-      - ./back_1/backend:/app
-    # links:
-    #   - redis
-    extra_hosts:
-      - host.docker.internal:host-gateway
+  # nest_api:
+  #   container_name: nest_api
+  #   image: nest_api:1.0.0
+  #   build:
+  #     context: .
+  #     target: base
+  #     dockerfile: ./back_1/Dockerfile
+  #   command: bash -c "npm install && npm run start"
+  #   depends_on:
+  #     - nest_db
+  #     # - redis
+  #   restart: always
+  #   env_file: ./back_1/.env
+  #   environment:
+  #     - DB_HOST=host.docker.internal
+  #   ports:
+  #     - ${NEST_PORT}:3000
+  #   volumes:
+  #     - ./back_1/backend:/app
+  #   # links:
+  #   #   - redis
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
 
   # # redis:
   # #   image: "redis:alpine"
