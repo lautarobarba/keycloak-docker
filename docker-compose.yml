@@ -1,27 +1,27 @@
 version: "3.8"
 name: demo_keycloak
 services:
-  # keycloak_db:
-  #   container_name: keycloak_db
-  #   image: keycloak_db:1.0.0
-  #   build:
-  #     context: .
-  #     target: base
-  #     dockerfile: ./database_1/Dockerfile
-  #   env_file: .env
-  #   environment:
-  #     - TZ=America/Argentina/Buenos_Aires
-  #     - POSTGRES_USER=${DB1_USER}
-  #     - POSTGRES_PASSWORD=${DB1_PASSWORD}
-  #     - POSTGRES_DB=${DB1_NAME}
-  #   restart: always
-  #   ports:
-  #     - ${DB1_PORT}:5432
-  #   volumes:
-  #     - ./database_1/database/data:/var/lib/postgresql/data
-  #     - ./database_1/backups:/backups
-  #   extra_hosts:
-  #     - host.docker.internal:host-gateway
+  keycloak_db:
+    container_name: keycloak_db
+    image: keycloak_db:1.0.0
+    build:
+      context: .
+      target: base
+      dockerfile: ./database_1/Dockerfile
+    env_file: .env
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+      - POSTGRES_USER=${DB1_USER}
+      - POSTGRES_PASSWORD=${DB1_PASSWORD}
+      - POSTGRES_DB=${DB1_NAME}
+    restart: always
+    ports:
+      - ${DB1_PORT}:5432
+    volumes:
+      - ./database_1/database/data:/var/lib/postgresql/data
+      - ./database_1/backups:/backups
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   nest_db:
     container_name: nest_db
@@ -67,55 +67,63 @@ services:
   #   extra_hosts:
   #     - host.docker.internal:host-gateway
 
-  # keycloak:
-  #   image: quay.io/keycloak/keycloak:latest
-  #   container_name: keycloak
-  #   command: start-dev
-  #   depends_on:
-  #     - keycloak_db
-  #   restart: always
-  #   env_file: ./keycloak/.env
-  #   environment:
-  #     # Credentials for admin account
-  #     KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER}
-  #     KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+  keycloak:
+    container_name: keycloak
+    image: bitnami/keycloak:${KEYCLOAK_SERVER_VERSION}
+    depends_on:
+      - keycloak_db
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 30s
+    env_file: .env
+    environment:
+      KEYCLOAK_HTTP_RELATIVE_PATH: /auth
 
-  #     # Enable health and metrics support
-  #     KC_HEALTH_ENABLED: true
-  #     KC_METRICS_ENABLED: true
+      # Credentials for admin account
+      KEYCLOAK_ADMIN_USER: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
 
-  #     # Credentials for storing into an external database
-  #     KC_DB: ${DBK_VENDOR}
-  #     KC_DB_URL_HOST: ${DBK_HOST}
-  #     KC_DB_URL_PORT: ${DBK_PORT}
-  #     KC_DB_URL_DATABASE: ${DBK_NAME}
-  #     KC_DB_USERNAME: ${DBK_USER}
-  #     KC_DB_PASSWORD: ${DBK_PASSWORD}
+      # Enable health and metrics support
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
 
-  #   ports:
-  #     - ${KEYCLOAK_PORT}:8080
-  #   extra_hosts:
-  #     - host.docker.internal:host-gateway
+      # Credentials for storing into an external database
+      KC_DB: postgres
+      KEYCLOAK_DATABASE_HOST: host.docker.internal
+      KEYCLOAK_DB_PORT: ${DB1_PORT}
+      KEYCLOAK_DB_DATABASE: ${DB1_NAME}
+      KEYCLOAK_DB_USER: ${DB1_USER}
+      KEYCLOAK_DATABASE_PASSWORD: ${DB1_PASSWORD}
+    ports:
+      - ${KEYCLOAK_PORT}:8080
+    volumes:
+      - ./keycloak/data:/opt/bitnami/keycloak/themes/identity
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
-  # next_app:
-  #   container_name: next_app
-  #   image: next_app:1.0.0
-  #   build:
-  #     context: .
-  #     target: base
-  #     dockerfile: ./front_1/Dockerfile
-  #   command: bash /start.sh
-  #   restart: always
-  #   env_file: .env
-  #   environment:
-  #     - PORT=${NEXT_PORT}
-  #   ports:
-  #     - ${NEXT_PORT}:${NEXT_PORT}
-  #   volumes:
-  #     - ./front_1/frontend:/app
-  #     - ./front_1/start.sh:/start.sh
-  #   extra_hosts:
-  #     - host.docker.internal:host-gateway
+  next_app:
+    container_name: next_app
+    image: next_app:1.0.0
+    build:
+      context: .
+      target: base
+      dockerfile: ./front_1/Dockerfile
+    command: bash /start.sh
+    restart: always
+    env_file: .env
+    environment:
+      - PORT=${NEXT_PORT}
+    ports:
+      - ${NEXT_PORT}:${NEXT_PORT}
+    volumes:
+      - ./front_1/frontend:/app
+      - ./front_1/start.sh:/start.sh
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   # react_app:
   #   container_name: react_app
