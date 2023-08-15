@@ -92,11 +92,10 @@ services:
       KC_METRICS_ENABLED: true
 
       # Credentials for storing into an external database
-      KC_DB: postgres
-      KEYCLOAK_DATABASE_HOST: host.docker.internal
-      KEYCLOAK_DB_PORT: ${DB1_PORT}
-      KEYCLOAK_DB_DATABASE: ${DB1_NAME}
-      KEYCLOAK_DB_USER: ${DB1_USER}
+      KEYCLOAK_DATABASE_HOST: "host.docker.internal"
+      KEYCLOAK_DATABASE_PORT: ${DB1_PORT}
+      KEYCLOAK_DATABASE_NAME: ${DB1_NAME}
+      KEYCLOAK_DATABASE_USER: ${DB1_USER}
       KEYCLOAK_DATABASE_PASSWORD: ${DB1_PASSWORD}
     ports:
       - ${KEYCLOAK_PORT}:8080
